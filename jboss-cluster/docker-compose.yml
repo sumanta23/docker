@@ -1,0 +1,23 @@
+portal:
+  image: nginx
+  ports:
+   - "80:80"
+  volumes:
+   - nginx.conf:/etc/nginx/conf.d/default.conf
+  links:
+   - jboss1:jboss1
+   - jboss2:jboss2
+jboss1:
+  image: myjboss
+  volumes:
+   - cluster/root.war:/jboss/standalone/deployments/root.war
+   - cluster/launch.sh:/jboss/bin/launch.sh
+  working_dir: /jboss/bin/
+  command: bash launch.sh
+jboss2:
+  image: myjboss
+  volumes:
+   - cluster/root.war:/jboss/standalone/deployments/root.war
+   - cluster/launch.sh:/jboss/bin/launch.sh
+  working_dir: /jboss/bin/
+  command: bash launch.sh
